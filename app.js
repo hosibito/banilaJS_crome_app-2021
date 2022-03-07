@@ -8,12 +8,12 @@ function onLoginSubmit(event) {
   event.preventDefault();
   loginForm.classList.add(HIDDEN_CLASSNAME);
   const username = loginInput.value;
-  greeting.innerText = `Hello ${username}`; // python f"Hello {username}""
+  localStorage.setItem("username", username); // 로컬 스토리지에 저장!
+  // .setItem("username", username)  .getItem("username")  .removeItem("username")
+  greeting.innerText = `Hello ${username}`; 
   greeting.classList.remove(HIDDEN_CLASSNAME);
 }
 
 loginForm.addEventListener("submit", onLoginSubmit);
 
-// 입력 form 에 이름을 입력하면 폼이 사라지고
-// h1 태그안에 Hello 유저네임  이 나타난다. 
 
