@@ -4,21 +4,23 @@ const toDoList = document.getElementById("todo-list");
 
 const TODOS_KEY = "todos";
 
-let toDos = [];  // 변경 가능하게 한다. 
+let toDos = [];  
 
 function saveToDos() {
   localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));  
 }
 
 function deleteToDo(event) {  
-  const li = event.target.parentElement; 
+  const li = event.target.parentElement;  //li는 이전부터 특정되어있었다. 
+  console.log(li.id);   // id 값을 태그에 저장해 놓았으므로. 스토리지에서 어떤아이디 값을 가진넘을 지우면 되는지 알수 있다.!
   li.remove();  
 }
 
-function paintToDo(newTodo) {
+function paintToDo(newTodoObj) {  // 오브젝트가 넘어옴.
   const li = document.createElement("li");
+  li.id = newTodoObj.id;        // li를 그릴때 id값을 넣어준다. <li id="1646703316413"><span>aa</span><button>❌</button></li>
   const span = document.createElement("span");  
-  span.innerText = newTodo;
+  span.innerText = newTodoObj.text;   // 텍스트 내용을 넣어준다. 
   const button = document.createElement("button");  
   button.innerText = "❌";
   button.addEventListener("click", deleteToDo);
@@ -31,8 +33,12 @@ function handleToDoSubmit(event) {
   event.preventDefault();
   const newTodo = toDoInput.value;
   toDoInput.value = "";
-  toDos.push(newTodo);
-  paintToDo(newTodo);  
+  const newTodoObj = {    // 지우는 값을 특정지우기 위해 오브젝트로 바꾼다. ID 값이 필요.
+    id: Date.now(),  // 랜덤하고 겹치지 않는 아이디 값을 얻기 위해 
+    text: newTodo,
+  };
+  toDos.push(newTodoObj);  // toDos = [{"id":1646703316413,"text":"aa"}] 로 저장됨.
+  paintToDo(newTodoObj);   // 그리는것도 오브젝트를 넘겨준다. 
   saveToDos(); 
 }
 
@@ -41,8 +47,10 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 const savedToDos = localStorage.getItem(TODOS_KEY);
 if (savedToDos !== null) {
   const parsedToDos = JSON.parse(savedToDos); 
-  toDos = parsedToDos;   // 로컬스토리지에 있는것을 내부데이터로 불러온다. 
-  parsedToDos.forEach(paintToDo);  // 각각의 데이터를 화면에 뿌려준다.
+  toDos = parsedToDos;   
+  parsedToDos.forEach(paintToDo);  
 }
+
+
 
 
