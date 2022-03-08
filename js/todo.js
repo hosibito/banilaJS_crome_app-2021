@@ -4,14 +4,13 @@ const toDoList = document.getElementById("todo-list");
 
 const TODOS_KEY = "todos";
 
-const toDos = [];
+let toDos = [];  // 변경 가능하게 한다. 
 
 function saveToDos() {
   localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));  
 }
 
-function deleteToDo(event) {
-  //console.log(event.target)  
+function deleteToDo(event) {  
   const li = event.target.parentElement; 
   li.remove();  
 }
@@ -39,14 +38,11 @@ function handleToDoSubmit(event) {
 
 toDoForm.addEventListener("submit", handleToDoSubmit);  
 
-const savedToDos = localStorage.getItem(TODOS_KEY); // 스토리지에서 가져온다.
-
+const savedToDos = localStorage.getItem(TODOS_KEY);
 if (savedToDos !== null) {
-  const parsedToDos = JSON.parse(savedToDos); // 가져온스트링을 데이터로 변환
-  parsedToDos.forEach((item) => console.log("this is the turn of ", item));
+  const parsedToDos = JSON.parse(savedToDos); 
+  toDos = parsedToDos;   // 로컬스토리지에 있는것을 내부데이터로 불러온다. 
+  parsedToDos.forEach(paintToDo);  // 각각의 데이터를 화면에 뿌려준다.
 }
 
-// function say_forEach(item) {
-//   console.log("this is the turn of ", item);
-// }
-// parsedToDos.forEach(say_forEach);
+
