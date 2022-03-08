@@ -11,16 +11,17 @@ function saveToDos() {
 }
 
 function deleteToDo(event) {  
-  const li = event.target.parentElement;  //li는 이전부터 특정되어있었다. 
-  console.log(li.id);   // id 값을 태그에 저장해 놓았으므로. 스토리지에서 어떤아이디 값을 가진넘을 지우면 되는지 알수 있다.!
-  li.remove();  
+  const li = event.target.parentElement;  
+  li.remove(); 
+  toDos = toDos.filter((toDo) => toDo.id !== parseInt(li.id));  //배열 필터!! 하단의 개념 파악할것. 
+  saveToDos();
 }
 
-function paintToDo(newTodoObj) {  // 오브젝트가 넘어옴.
+function paintToDo(newTodoObj) {  
   const li = document.createElement("li");
-  li.id = newTodoObj.id;        // li를 그릴때 id값을 넣어준다. <li id="1646703316413"><span>aa</span><button>❌</button></li>
+  li.id = newTodoObj.id;       
   const span = document.createElement("span");  
-  span.innerText = newTodoObj.text;   // 텍스트 내용을 넣어준다. 
+  span.innerText = newTodoObj.text;   
   const button = document.createElement("button");  
   button.innerText = "❌";
   button.addEventListener("click", deleteToDo);
@@ -33,12 +34,12 @@ function handleToDoSubmit(event) {
   event.preventDefault();
   const newTodo = toDoInput.value;
   toDoInput.value = "";
-  const newTodoObj = {    // 지우는 값을 특정지우기 위해 오브젝트로 바꾼다. ID 값이 필요.
-    id: Date.now(),  // 랜덤하고 겹치지 않는 아이디 값을 얻기 위해 
+  const newTodoObj = {   
+    id: Date.now(),  
     text: newTodo,
   };
-  toDos.push(newTodoObj);  // toDos = [{"id":1646703316413,"text":"aa"}] 로 저장됨.
-  paintToDo(newTodoObj);   // 그리는것도 오브젝트를 넘겨준다. 
+  toDos.push(newTodoObj); 
+  paintToDo(newTodoObj);  
   saveToDos(); 
 }
 
@@ -51,6 +52,12 @@ if (savedToDos !== null) {
   parsedToDos.forEach(paintToDo);  
 }
 
+// function sexyFilter(item){
+//   //true가 반환된 item만 배열에서 유지된다. 
+//   return item !== 3
+// }
+
+// [1,2,3,4].filter(sexyFilter)
 
 
 
